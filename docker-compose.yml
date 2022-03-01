@@ -1,0 +1,9 @@
+version: '3'
+services:
+  dev:
+    build: ./
+    container_name: steganobot
+    volumes:
+      - ./:/code
+    stdin_open: true
+    tty: true
