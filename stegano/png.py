@@ -23,7 +23,7 @@ class TextHider:
         # open image, get basic info and data
         image = PIL.Image.open(filename, 'r')
         width, height = image.size
-        img_arr = numpy.array(image.getdata()) # data of image
+        img_arr = numpy.array(image.getdata())  # data of image
 
         if image.mode == "P":
             raise ValueError("Unsupported type of PNG image")
@@ -33,7 +33,7 @@ class TextHider:
         secret += self.stop_indicator
 
         # get bytes of secret
-        byte_msg = ''.join(f"{ord(c):08b}" for c in secret)
+        byte_msg = ''.join(f"{ord(c):016b}" for c in secret)
         bits = len(byte_msg)
         if bits > pixels:
             raise ValueError("Not enought space in PNG image")
@@ -74,7 +74,8 @@ class TextHider:
                        for i in range(0, len(secret_bits), 8)]
 
         # decode bits into text
-        secret = [chr(int(secret_bits[i], 2)) for i in range(len(secret_bits))]
+        secret = [chr(int(secret_bits[i] + secret_bits[i+1], 2))
+                  for i in range(0, len(secret_bits), 2)]
         secret = ''.join(secret)
 
         # check if stop indicator in secret
