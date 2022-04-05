@@ -12,9 +12,8 @@ class TextHider:
         self.stop_indicator = stop_indicator
 
     def encode(self, secret: str, filename: str, out="encoded.png") -> None:
-        ''' 
+        '''
         Method encodes text into given image using LSB.
-
         secret: text information to hide
         filename: image in which we want to encode secret
         out: name of encoded image
@@ -56,7 +55,6 @@ class TextHider:
         '''
         Method decodes text from given image which is encoded with "encode" method.
         Returns encoded message or None if image isn't encoded.
-
         filename: encoded image
         '''
 

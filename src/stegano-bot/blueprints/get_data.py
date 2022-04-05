@@ -1,10 +1,14 @@
-from constants import users_info
-from user import User
-import stegano
+import os
+
+from ..constants import users_info
+from ..user import User
+from .. import stegano
+from ..soundTasks import convert
 
 from vkbottle import DocMessagesUploader
 from vkbottle.http import AiohttpClient
 from vkbottle.bot import Blueprint, Message
+from vkbottle.dispatch.rules.base import (FromUserRule)
 
 bp = Blueprint()
 http_client = AiohttpClient()
@@ -39,7 +43,8 @@ async def attachment_document(message: Message):
         users_info[user_info.id].active_attachment \
             = message.attachments[0]
 
-    if message.attachments[0].doc.type == 4 and users_info[user_info.id].state == 1:
+    if message.attachments[0].doc.type == 4 \
+            and users_info[user_info.id].state == 1:
         doc = await http_client.request_content(message.attachments[0].doc.url)
         with open('image.png', 'wb') as file:
             file.write(doc)
@@ -48,15 +53,21 @@ async def attachment_document(message: Message):
             "encoded.png", "encoded.png", peer_id=message.peer_id)
         await message.answer("Результат", attachment=encoded_doc)
         users_info[user_info.id].state = 0
+        os.remove(os.path.join(os.path.abspath(os.path.dirname(__file__)),
+                               'image.png'))
 
-    if message.attachments[0].doc.type == 4 and users_info[user_info.id].state == 2:
-        doc_get = await http_client.request_content(message.attachments[0].doc.url)
+    if message.attachments[0].doc.type == 4 \
+            and users_info[user_info.id].state == 2:
+        doc_get = \
+            await http_client.request_content(message.attachments[0].doc.url)
         with open('encoded_got.png', 'wb') as file:
             file.write(doc_get)
         decoded_line = hider.decode('encoded_got.png')
         await message.answer("Результат:")
         await message.answer(decoded_line)
         users_info[user_info.id].state = 0
+        os.remove(os.path.join(os.path.abspath(os.path.dirname(__file__)),
+                               'encoded_got.png'))
 
     await message.answer("Тип документа: {}\nРазмер файла: {} байт\n"
                          "Внутренняя ссылка: {}"
@@ -75,11 +86,41 @@ async def audio_message(message: Message):
     """
     user_info = await bp.api.users.get(message.from_id)
     user_info = user_info[0]
+
     if user_info.id not in users_info.keys():
         users_info[user_info.id] = User(user_info.id)
-    if users_info[user_info.id].state == 2:
-        users_info[user_info.id].active_attachment \
-            = message.attachments[0]
+
     await message.answer("Ссылка на mp3: {}\nСсылка на ogg:".format(
         message.attachments[0].audio_message.link_mp3,
         message.attachments[0].audio_message.link_ogg))
+
+    if users_info[user_info.id].state == 3:
+        users_info[user_info.id].active_attachment \
+            = message.attachments[0]
+
+        audio = await http_client.request_content(message.attachments[0]
+                                                  .audio_message.link_mp3)
+        with open('audioMessage.mp3', 'wb') as file:
+            file.write(audio)
+        convert.convert_mp3_to_wav("audioMessage.mp3", "out.wav")
+        converted = await DocMessagesUploader(bp.api).upload(
+            "out.wav", "out.wav", peer_id=message.peer_id)
+        await message.answer("Ваше голосовое в формате .wav",
+                             attachment=converted)
+
+        users_info[user_info.id].state = 4
+        os.remove(os.path.join(os.path.abspath(os.path.dirname(__file__)),
+                               'audioMessage.mp3'))
+
+
+@bp.on.message(FromUserRule())
+async def unique_message(message: Message):
+    user_info = await bp.api.users.get(message.from_id)
+    user_info = user_info[0]
+    if users_info[user_info.id].state == 4:
+        print(message.text)
+    if message.fwd_messages[0]:
+        await message.answer(str(message.fwd_messages[0].attachments[0]
+                                 .audio_message.link_mp3))
+        await message.answer(str(message.fwd_messages[0].attachments[0]
+                                 .audio_message.link_ogg))

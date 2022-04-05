@@ -1,0 +1,15 @@
+Metadata-Version: 2.1
+Name: SteganoBot
+Version: 0.0.1
+Summary: A VK bot for hiding information in images
+Home-page: https://github.com/astronmax/SteganoBot
+License: Apache License 2.0
+Platform: UNKNOWN
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown
+License-File: LICENSE
+
+# SteganoBot
+Bot for hiding information in images 
+
+

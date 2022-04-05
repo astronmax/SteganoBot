@@ -1,5 +1,5 @@
-from constants import users_info
-from user import User
+from ..constants import users_info
+from ..user import User
 
 from vkbottle.bot import Blueprint, Message
 from vkbottle import Keyboard, KeyboardButtonColor, Text
