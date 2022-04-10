@@ -18,3 +18,4 @@ src/stegano-bot/blueprints/get_data.py
 src/stegano-bot/blueprints/greeting.py
 src/stegano-bot/stegano/__init__.py
 src/stegano-bot/stegano/png.py
+src/stegano-bot/stegano/png_local_test.py

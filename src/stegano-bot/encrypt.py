@@ -1,5 +1,5 @@
-from ..constants import users_info
-from ..user import User
+from constants import users_info
+from user import User
 
 from vkbottle.bot import Blueprint, Message
 
@@ -13,7 +13,8 @@ async def encrypt_photo(message: Message):
     Changes user state to 1
     Allows user to send photo as a document and
     write text to hide in the photo in the next message
-    :param message: Message from user
+
+    :param message: "Зашифровать в фото"
     :return: None
     """
     user_info = await bp.api.users.get(message.from_id)
@@ -34,7 +35,8 @@ async def encrypt_audio_message(message: Message):
     Changes user state to 3
     Allows user to send photo as a document and
     write text to hide in the photo in the next message
-    :param message: Message from user
+
+    :param message: "Зашифровать в голосовом сообщении"
     :return: None
     """
     user_info = await bp.api.users.get(message.from_id)

@@ -6,6 +6,7 @@ users_info = {}
 async def load_users():
     """
     Loads users from 'users.pickle' file
+
     :return: dictionary {id:User}
     """
     with open("users.pickle", "rb") as file:
@@ -17,6 +18,7 @@ async def load_users():
 async def save_users(data):
     """
     Saves users to 'users.pickle' file
+
     :return: None
     """
     with open("users.pickle", "wb") as file:

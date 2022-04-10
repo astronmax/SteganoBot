@@ -1,5 +1,5 @@
-from ..constants import users_info, save_users
-from ..user import User
+from constants import users_info, save_users
+from user import User
 
 from vkbottle.bot import Blueprint, Message
 
@@ -12,7 +12,8 @@ async def decrypt_photo(message: Message):
     Saves user to users_info dictionary
     Changes user state to 2
     Pickles users_info dictionary
-    :param message: Message from user
+
+    :param message: "Расшифровать фото"
     :return: None
     """
     user_info = await bp.api.users.get(message.from_id)
