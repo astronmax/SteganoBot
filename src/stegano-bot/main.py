@@ -16,8 +16,7 @@ def create_parser():
     Creates parser for setting bot's token via a cmd argument
     """
     parser = argparse.ArgumentParser()
-    parser.add_argument('token', nargs='?', default="29e2bdd91405a6cb1f2d35bc02edf0d089725d24a38f2c5deba73eaa8cb6a6e4ca6b589485940fbb1240c")
-    # parser.add_argument('token', nargs='?', default=os.environ["token"])
+    parser.add_argument('token', nargs='?', default=os.environ["token"])
     return parser
 
 
