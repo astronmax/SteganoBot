@@ -92,12 +92,7 @@ your system</p>
 <dt class="sig sig-object py" id="user.User">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">user.</span></span><span class="sig-name descname"><span class="pre">User</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vk_id</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#user.User" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>This class saves user’s ids, states and last attachment</p>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="user.User.active_attachment">
-<span class="sig-name descname"><span class="pre">active_attachment</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#user.User.active_attachment" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
+<p>This class saves user’s ids and states</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="user.User.id">
 <span class="sig-name descname"><span class="pre">id</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#user.User.id" title="Permalink to this definition"></a></dt>
@@ -134,12 +129,6 @@ your system</p>
 </dd></dl>
 
 <p>Bot startup:</p>
-<span class="target" id="module-main"></span><dl class="py function">
-<dt class="sig sig-object py" id="main.create_parser">
-<span class="sig-prename descclassname"><span class="pre">main.</span></span><span class="sig-name descname"><span class="pre">create_parser</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#main.create_parser" title="Permalink to this definition"></a></dt>
-<dd><p>Creates parser for setting bot’s token via a cmd argument</p>
-</dd></dl>
-
 </section>
 <section id="blueprints-module">
 <h2>Blueprints module<a class="headerlink" href="#blueprints-module" title="Permalink to this headline"></a></h2>
@@ -164,16 +153,31 @@ Greets user and calls a keyboard for them</p>
 <span class="target" id="module-get_data"></span><dl class="py function">
 <dt class="sig sig-object py" id="get_data.attachment_document">
 <em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">get_data.</span></span><span class="sig-name descname"><span class="pre">attachment_document</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">vkbottle.bot.Message</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#get_data.attachment_document" title="Permalink to this definition"></a></dt>
-<dd><p>Saves user to users_info dictionary</p>
-<dl>
-<dt>If user’s state is ‘1’ and user sent a .png file:</dt><dd><p>Gets photo as a document and text in the same message
+<dd><p>Saves user to users_info dictionary
+If user’s state is ‘1’ and user sent a .png file:</p>
+<blockquote>
+<div><p>Gets photo as a document and text in the same message
 for hiding in the photo</p>
 <p>Encodes text in .png photo and sends it back</p>
 <p>Changes user’s state to 0</p>
-</dd>
+</div></blockquote>
+<dl>
 <dt>If user’s state is ‘2’ and user sent a .png file:</dt><dd><p>Gets photo as a document</p>
 <p>Decodes text from .png photo and sends it back</p>
 <p>Changes user’s state to 0</p>
+</dd>
+<dt>If user’s state is ‘4’ and user sent file:</dt><dd><p>Gets file</p>
+<p>Encodes it to specified user’s .wav file</p>
+<p>Sends it back</p>
+<p>Deletes temp files</p>
+</dd>
+<dt>If user’s state is ‘5’ and user sent file:</dt><dd><p>Gets file</p>
+<dl class="simple">
+<dt>If file format and bytes number in message:</dt><dd><p>Decodes file from audio and sends it back</p>
+</dd>
+<dt>If bytes number in message:</dt><dd><p>Decodes text from audio and sends it back</p>
+</dd>
+</dl>
 </dd>
 </dl>
 <p>Tells the document type, size and url to the user</p>
@@ -192,6 +196,9 @@ for hiding in the photo</p>
 <em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">get_data.</span></span><span class="sig-name descname"><span class="pre">audio_message</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">vkbottle.bot.Message</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#get_data.audio_message" title="Permalink to this definition"></a></dt>
 <dd><p>Saves user to users_info dictionary
 Tells the url to .mp3 and .ogg to the user</p>
+<p>Gets mp3, converts it to .wav, sends .md version of sent audio message
+back</p>
+<p>Changes state to 4</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>message</strong> – Audio message from user</p>
@@ -205,9 +212,7 @@ Tells the url to .mp3 and .ogg to the user</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="get_data.unique_message">
 <em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">get_data.</span></span><span class="sig-name descname"><span class="pre">unique_message</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">vkbottle.bot.Message</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#get_data.unique_message" title="Permalink to this definition"></a></dt>
-<dd><p>Sees if a received message is a forwarded message
-if the message contains audio messages then it gives a link to
-download it</p>
+<dd><p>Gets text to hide in audio file</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>message</strong> – Any message</p>
@@ -224,8 +229,7 @@ download it</p>
 <em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">encrypt.</span></span><span class="sig-name descname"><span class="pre">encrypt_audio_message</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">vkbottle.bot.Message</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#encrypt.encrypt_audio_message" title="Permalink to this definition"></a></dt>
 <dd><p>Saves user to users_info dictionary
 Changes user state to 3
-Allows user to send photo as a document and
-write text to hide in the photo in the next message</p>
+Allows user to send audio message and data to hide in the next message</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>message</strong> – “Зашифровать в голосовом сообщении”</p>
@@ -255,6 +259,22 @@ write text to hide in the photo in the next message</p>
 
 <p>Decryption logic:</p>
 <span class="target" id="module-decrypt"></span><dl class="py function">
+<dt class="sig sig-object py" id="decrypt.decrypt_audio">
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">decrypt.</span></span><span class="sig-name descname"><span class="pre">decrypt_audio</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">vkbottle.bot.Message</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#decrypt.decrypt_audio" title="Permalink to this definition"></a></dt>
+<dd><p>Saves user to users_info dictionary
+Changes user state to 5
+Pickles users_info dictionary</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>message</strong> – “Расшифровать аудио”</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="decrypt.decrypt_photo">
 <em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">decrypt.</span></span><span class="sig-name descname"><span class="pre">decrypt_photo</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">vkbottle.bot.Message</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#decrypt.decrypt_photo" title="Permalink to this definition"></a></dt>
 <dd><p>Saves user to users_info dictionary
@@ -291,13 +311,86 @@ filename: encoded image</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="stegano.png.TextHider.encode">
-<span class="sig-name descname"><span class="pre">encode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">secret</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">out</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'encoded.png'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#stegano.png.TextHider.encode" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">encode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">secret</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">out</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#stegano.png.TextHider.encode" title="Permalink to this definition"></a></dt>
 <dd><p>Method encodes text into given image using LSB.
 secret: text information to hide
 filename: image in which we want to encode secret
 out: name of encoded image</p>
 </dd></dl>
 
+</dd></dl>
+
+<p>Audio logic:</p>
+<span class="target" id="module-stegano.wav"></span><dl class="py function">
+<dt class="sig sig-object py" id="stegano.wav.get_size_to_hide">
+<span class="sig-prename descclassname"><span class="pre">stegano.wav.</span></span><span class="sig-name descname"><span class="pre">get_size_to_hide</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sound_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_lsb</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#stegano.wav.get_size_to_hide" title="Permalink to this definition"></a></dt>
+<dd><p>Returns the amount of bytes available for hiding with that amount of LSB</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>sound_path</strong> – Path to audio file</p></li>
+<li><p><strong>num_lsb</strong> – Number of LSBs to use</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Amount of bytes</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="stegano.wav.hide_bytes">
+<span class="sig-prename descclassname"><span class="pre">stegano.wav.</span></span><span class="sig-name descname"><span class="pre">hide_bytes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sound_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_lsb</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#stegano.wav.hide_bytes" title="Permalink to this definition"></a></dt>
+<dd><p>Hides bytes in .wav file using LSB</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>sound_path</strong> – Path to audio file</p></li>
+<li><p><strong>input_data</strong> – Path to file to hide</p></li>
+<li><p><strong>output_path</strong> – Path to output audio file</p></li>
+<li><p><strong>num_lsb</strong> – Number of LSBs to use</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="stegano.wav.prepare">
+<span class="sig-prename descclassname"><span class="pre">stegano.wav.</span></span><span class="sig-name descname"><span class="pre">prepare</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sound_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_lsb</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#stegano.wav.prepare" title="Permalink to this definition"></a></dt>
+<dd><p>Loads .wav file data and specifications</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>sound_path</strong> – Path to audio file</p></li>
+<li><p><strong>num_lsb</strong> – Number of LSBs to use</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="stegano.wav.recover_data">
+<span class="sig-prename descclassname"><span class="pre">stegano.wav.</span></span><span class="sig-name descname"><span class="pre">recover_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sound_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_lsb</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bytes_to_recover</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#stegano.wav.recover_data" title="Permalink to this definition"></a></dt>
+<dd><p>Gets bytes from .wav file, saves suggested file and returns bytes</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>sound_path</strong> – Path to audio file</p></li>
+<li><p><strong>output_path</strong> – Path to decoded file</p></li>
+<li><p><strong>num_lsb</strong> – Number of LSBs to use</p></li>
+<li><p><strong>bytes_to_recover</strong> – Amount of bytes hidden</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Bytes of hidden data</p>
+</dd>
+</dl>
 </dd></dl>
 
 </section>

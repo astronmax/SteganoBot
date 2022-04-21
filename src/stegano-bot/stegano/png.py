@@ -11,7 +11,7 @@ class TextHider:
     def __init__(self, stop_indicator="$STOP$") -> None:
         self.stop_indicator = stop_indicator
 
-    def encode(self, secret: str, filename: str, out="encoded.png") -> None:
+    def encode(self, secret: str, filename: str, out: str) -> None:
         '''
         Method encodes text into given image using LSB.
         secret: text information to hide

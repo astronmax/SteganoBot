@@ -92,6 +92,14 @@ Picture logic:
     :inherited-members:
     :show-inheritance:
 
+Audio logic:
+
+.. automodule:: stegano.wav
+    :members:
+    :undoc-members:
+    :inherited-members:
+    :show-inheritance:
+
 ----------------------
 Sound module
 ----------------------

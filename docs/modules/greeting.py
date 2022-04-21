@@ -1,6 +1,4 @@
-
 from vkbottle.bot import Blueprint, Message
-from vkbottle import Keyboard, KeyboardButtonColor, Text
 
 
 async def hello_message(message: Message):

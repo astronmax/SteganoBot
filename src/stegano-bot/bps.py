@@ -1,6 +1,7 @@
-import decrypt
-import encrypt
-import get_data
 import greeting
+import encrypt
+import decrypt
+import get_data
 
-bps = [decrypt.bp, encrypt.bp, get_data.bp, greeting.bp]
+
+bps = [greeting.bp, encrypt.bp, decrypt.bp, get_data.bp]

@@ -24,8 +24,6 @@ async def encrypt_photo(message: Message):
     users_info[user_info.id].state = 1
     await message.answer("Загрузите фото и напишите в этом же сообщении текст "
                          "для шифрования в фото")
-    await message.answer("State у " + str(user_info.id) + " был изменён на "
-                         + str(users_info[user_info.id].state))
 
 
 @bp.on.message(text="Зашифровать в голосовом сообщении")
@@ -33,8 +31,7 @@ async def encrypt_audio_message(message: Message):
     """
     Saves user to users_info dictionary
     Changes user state to 3
-    Allows user to send photo as a document and
-    write text to hide in the photo in the next message
+    Allows user to send audio message and data to hide in the next message
 
     :param message: "Зашифровать в голосовом сообщении"
     :return: None
@@ -46,6 +43,4 @@ async def encrypt_audio_message(message: Message):
     users_info[user_info.id].state = 3
     await message.answer("Запишите голосовое сообщение "
                          "и в следующем сообщении напишите текст "
-                         "для шифрования в фото")
-    await message.answer("State у " + str(user_info.id) + " был изменён на "
-                         + str(users_info[user_info.id].state))
+                         "либо отправьте файл")

@@ -1,1 +1,1 @@
-from . import png
+from . import png, wav

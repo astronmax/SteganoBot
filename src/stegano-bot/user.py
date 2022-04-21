@@ -1,10 +1,9 @@
 class User:
     """
-    This class saves user's ids, states and last attachment
+    This class saves user's ids and states
     """
     id = None
     state = 0
-    active_attachment = None
 
     def __init__(self, vk_id):
         """
@@ -19,7 +18,7 @@ class User:
         """
         Converts user into a printable string
 
-        :return: Id, State, Attachment
+        :return: Id, State
         """
-        return "User id: {}, state: {}, active_attachment: {}"\
-            .format(self.id, self.state, self.active_attachment)
+        return "User id: {}, state: {}"\
+            .format(self.id, self.state)

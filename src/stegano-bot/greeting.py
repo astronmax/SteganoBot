@@ -13,7 +13,7 @@ KEYBOARD.add(Text("Зашифровать в голосовом сообщени
              color=KeyboardButtonColor.PRIMARY)
 KEYBOARD.row()
 KEYBOARD.add(Text("Расшифровать фото"), color=KeyboardButtonColor.SECONDARY)
-KEYBOARD.add(Text("Расшифровать голосовое сообщение"),
+KEYBOARD.add(Text("Расшифровать аудио"),
              color=KeyboardButtonColor.SECONDARY)
 
 KEYBOARD = KEYBOARD.get_json()
@@ -37,5 +37,3 @@ async def hello_message(message: Message):
                          .format(user_info.first_name))
     await message.answer("Для удобства можете пользоваться клавиатурой",
                          keyboard=KEYBOARD)
-    await message.answer("Был создан пользователь " +
-                         str(users_info[user_info.id]))
