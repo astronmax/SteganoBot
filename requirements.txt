@@ -1,1 +1,4 @@
-vkbottle
+vkbottle~=4.2.1
+numpy~=1.22.2
+pillow~=9.0.1
+pydub~=0.25.1
